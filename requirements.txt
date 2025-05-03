@@ -1,0 +1,7 @@
+langchain
+langchain-community
+langchain-openai
+qdrant-client 
+langchain-qdrant
+pypdf
+langchain_core
