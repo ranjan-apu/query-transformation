@@ -25,7 +25,7 @@ class ParallelQueryFanOut(BaseRAGTechniques):
         return all_docs
 
     def _generate_alternative_queries(self, query: str) -> List[str]:
-        prompt = f"""Generate 3 alternative search queries that capture different aspects of the original query.
+        prompt = f"""Generate minimum of 3 alternative search queries that capture different aspects of the original query.Also Alternate Query should capture possible spelling mistake and if the use query is in the different language we should have comprehnsive query in the english
         Format your response exactly as follows:
         Query 1: [first alternative query]
         Query 2: [second alternative query]

@@ -9,7 +9,7 @@ class QdrantDB:
         self.client = QdrantClient(host=host, port=port)
         self.collection_name = collection_name
 
-    def create_collection(self, embeddings, vector_size=1536):
+    def create_collection(self, embeddings, vector_size=1024):
         collections = self.client.get_collections().collections
         collection_names = [collection.name for collection in collections]
 
@@ -33,10 +33,10 @@ class QdrantDB:
             collection_name=self.collection_name,
         )
 
-    def similarity_search(self, query: str):
+    def similarity_search(self, query: str, k = 3):
         qdrant = Qdrant(
             client=self.client,
             embeddings=self.embeddings,
             collection_name=self.collection_name,
         )
-        return qdrant.similarity_search(query)
+        return qdrant.similarity_search(query,k=k)

@@ -2,6 +2,7 @@
 import os
 from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_mistralai import MistralAIEmbeddings
 from rich.console import Console
 
 from src.app.techniques.parallel_query import ParallelQueryFanOut
@@ -14,6 +15,11 @@ def main():
     # Load environment variables
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
+    openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+    mistral_api_key = os.getenv("MISTRAL_API_KEY")
+    hf_token = os.getenv("HF_TOKEN")
+
+    os.environ["HF_TOKEN"] = hf_token
 
     if not api_key:
         print("Error: OPENAI_API_KEY not found in environment variables")
@@ -31,8 +37,13 @@ def main():
 
     try:
         # Initialize components
-        embeddings = OpenAIEmbeddings(api_key=api_key)
-        llm = ChatOpenAI(model="gpt-4.1-nano-2025-04-14",api_key=api_key, temperature=0)
+        embeddings = MistralAIEmbeddings(api_key=mistral_api_key,model="mistral-embed")
+        # llm = ChatOpenAI(model="gpt-4.1-nano-2025-04-14",api_key=api_key, temperature=0.1)
+        llm = ChatOpenAI(
+            model="qwen/qwen3-14b:free",
+            api_key=openrouter_api_key,
+            base_url="https://openrouter.ai/api/v1"
+        )
         db = QdrantDB()
 
         # Load and process PDF
